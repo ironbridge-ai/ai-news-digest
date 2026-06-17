@@ -221,6 +221,7 @@ def story_number_badge(n):
 
 
 def glance_card(n, story):
+    modal_id = f"modal-{n}"
     return f"""
     <tr>
       <td style="padding:0 0 16px 0">
@@ -232,7 +233,7 @@ def glance_card(n, story):
                 <tr>
                   {story_number_badge(n)}
                   <td valign="middle">
-                    <p style="margin:0;font-size:16px;font-weight:700;color:{TEXT};font-family:Arial,sans-serif;line-height:1.3">{story['title']}</p>
+                    <p onclick="openModal('{modal_id}')" style="margin:0;font-size:16px;font-weight:700;color:{ACCENT};font-family:Arial,sans-serif;line-height:1.3;cursor:pointer">{story['title']} <span style="font-size:12px;opacity:0.6">&#8599;</span></p>
                   </td>
                 </tr>
                 <tr><td colspan="2" style="padding-top:10px">
@@ -246,32 +247,18 @@ def glance_card(n, story):
     </tr>"""
 
 
-def deep_card(n, story):
+def story_modal(n, story):
+    modal_id = f"modal-{n}"
     return f"""
-    <tr>
-      <td style="padding:0 0 20px 0">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0"
-               style="background:{BG_CARD2};border-radius:10px;border:1px solid {BORDER}">
-          <tr>
-            <td style="padding:22px 24px">
-              <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                <tr>
-                  {story_number_badge(n)}
-                  <td valign="middle">
-                    <p style="margin:0;font-size:17px;font-weight:700;color:{TEXT};font-family:Arial,sans-serif;line-height:1.3">{story['title']}</p>
-                    <p style="margin:4px 0 0 0;font-size:11px;color:{PURPLE};font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px">{story['source']}</p>
-                  </td>
-                </tr>
-                <tr><td colspan="2" style="padding-top:14px">
-                  <p style="margin:0 0 12px 0;font-size:14px;color:{TEXT};font-family:Arial,sans-serif;line-height:1.7">{story['deep_p1']}</p>
-                  <p style="margin:0;font-size:14px;color:{MUTED};font-family:Arial,sans-serif;line-height:1.7">{story['deep_p2']}</p>
-                </td></tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>"""
+<div id="{modal_id}" class="modal" onclick="if(event.target===this)closeModal('{modal_id}')">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('{modal_id}')">&times;</button>
+    <p style="margin:0 0 8px 0;font-size:11px;color:{PURPLE};font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px">{story['source']}</p>
+    <h2 style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:{TEXT};font-family:Arial,sans-serif;line-height:1.3">{story['title']}</h2>
+    <p style="margin:0 0 14px 0;font-size:14px;color:{TEXT};font-family:Arial,sans-serif;line-height:1.7">{story['deep_p1']}</p>
+    <p style="margin:0;font-size:14px;color:{MUTED};font-family:Arial,sans-serif;line-height:1.7">{story['deep_p2']}</p>
+  </div>
+</div>"""
 
 
 def section_header(title, icon):
@@ -291,7 +278,7 @@ def section_header(title, icon):
 
 def render_html(data, today):
     glance_rows = "".join(glance_card(i + 1, s) for i, s in enumerate(data["stories"]))
-    deep_rows   = "".join(deep_card(i + 1, s)   for i, s in enumerate(data["stories"]))
+    modals      = "".join(story_modal(i + 1, s) for i, s in enumerate(data["stories"]))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -299,6 +286,42 @@ def render_html(data, today):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{data['subject']}</title>
+<style>
+  .modal {{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }}
+  .modal.active {{ display: flex; }}
+  .modal-content {{
+    background: {BG_CARD2};
+    border: 1px solid {BORDER};
+    border-radius: 14px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }}
+  .modal-close {{
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: {MUTED};
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+  }}
+  .modal-close:hover {{ color: #fff; }}
+</style>
 </head>
 <body style="margin:0;padding:0;background-color:#060912;font-family:Arial,Helvetica,sans-serif">
 
@@ -334,10 +357,8 @@ def render_html(data, today):
     <td style="background:{BG_MAIN};padding:28px 32px 8px;border-left:1px solid {BORDER};border-right:1px solid {BORDER}">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
 
-        {section_header("Top 5 Stories at a Glance", "&#9889;")}
+        {section_header("Top 5 Stories at a Glance — click a title for the full story", "&#9889;")}
         {glance_rows}
-        {section_header("Deep Dive &mdash; The Full Story", "&#128269;")}
-        {deep_rows}
 
       </table>
     </td>
@@ -363,6 +384,27 @@ def render_html(data, today):
 </table>
 </td></tr>
 </table>
+
+{modals}
+
+<script>
+  function openModal(id) {{
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }}
+  function closeModal(id) {{
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+  }}
+  document.addEventListener('keydown', function(e) {{
+    if (e.key === 'Escape') {{
+      document.querySelectorAll('.modal.active').forEach(function(m) {{
+        m.classList.remove('active');
+      }});
+      document.body.style.overflow = '';
+    }}
+  }});
+</script>
 </body>
 </html>"""
 
