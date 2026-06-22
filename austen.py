@@ -740,21 +740,17 @@ def render_html(data, today, date_slug):
 
 # ─── EML generator ──────────────────────────────────────────────────────────
 
-def render_eml(subject, html, date_slug):
-    """Return an .eml file string that opens in Outlook/Mail ready to send."""
-    import base64
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"]    = ""
-    msg["To"]      = ""
-    msg["Date"]    = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
-    msg["X-Unsent"] = "1"   # tells some clients this is a draft
-
-    msg.attach(MIMEText(html, "html", "utf-8"))
-    return msg.as_string()
+def render_applescript(subject, html):
+    """Return an AppleScript that opens a new Outlook compose window with the digest."""
+    # Escape backslashes and double-quotes for AppleScript string literals,
+    # then collapse newlines so the HTML is one continuous string.
+    escaped = html.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "").replace("\r", "")
+    return f'''tell application "Microsoft Outlook"
+    activate
+    set newMessage to make new outgoing message with properties {{subject:"{subject}", content:"{escaped}"}}
+    open newMessage
+end tell
+'''
 
 
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
@@ -1018,7 +1014,7 @@ def main():
 
     txt_file  = f"austen_{date_slug}.txt"
     html_file = f"austen_{date_slug}.html"
-    eml_file  = f"austen_{date_slug}.eml"
+    cmd_file  = f"austen_{date_slug}.command"
 
     txt = render_text(data, today)
     with open(txt_file, "w", encoding="utf-8") as f:
@@ -1028,14 +1024,16 @@ def main():
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html)
 
-    eml = render_eml(data["subject"], html, date_slug)
-    with open(eml_file, "w", encoding="utf-8") as f:
-        f.write(eml)
+    script = render_applescript(data["subject"], html)
+    cmd = f'#!/bin/bash\nosascript << \'APPLESCRIPT\'\n{script}\nAPPLESCRIPT\n'
+    with open(cmd_file, "w", encoding="utf-8") as f:
+        f.write(cmd)
+    os.chmod(cmd_file, 0o755)
 
     print(txt)
     print(f"\n--- Text saved to {txt_file}")
     print(f"--- HTML saved to {html_file}")
-    print(f"--- Email ready:  {eml_file}  (double-click to open in Outlook)")
+    print(f"--- Email ready:  {cmd_file}  (double-click to compose in Outlook)")
 
     publish_to_pages(html_file, date_slug)
 
