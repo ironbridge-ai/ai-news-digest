@@ -738,6 +738,25 @@ def render_html(data, today, date_slug):
 </html>"""
 
 
+# ─── EML generator ──────────────────────────────────────────────────────────
+
+def render_eml(subject, html, date_slug):
+    """Return an .eml file string that opens in Outlook/Mail ready to send."""
+    import base64
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"]    = ""
+    msg["To"]      = ""
+    msg["Date"]    = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
+    msg["X-Unsent"] = "1"   # tells some clients this is a draft
+
+    msg.attach(MIMEText(html, "html", "utf-8"))
+    return msg.as_string()
+
+
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
 
 PAGES_BASE_URL = "https://weekly.ramsac.co.uk"
@@ -999,6 +1018,7 @@ def main():
 
     txt_file  = f"austen_{date_slug}.txt"
     html_file = f"austen_{date_slug}.html"
+    eml_file  = f"austen_{date_slug}.eml"
 
     txt = render_text(data, today)
     with open(txt_file, "w", encoding="utf-8") as f:
@@ -1008,9 +1028,14 @@ def main():
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html)
 
+    eml = render_eml(data["subject"], html, date_slug)
+    with open(eml_file, "w", encoding="utf-8") as f:
+        f.write(eml)
+
     print(txt)
     print(f"\n--- Text saved to {txt_file}")
     print(f"--- HTML saved to {html_file}")
+    print(f"--- Email ready:  {eml_file}  (double-click to open in Outlook)")
 
     publish_to_pages(html_file, date_slug)
 

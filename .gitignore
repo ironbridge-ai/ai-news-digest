@@ -5,4 +5,5 @@ __pycache__/
 .venv/
 austen_*.html
 austen_*.txt
+austen_*.eml
 feedback_log.json
