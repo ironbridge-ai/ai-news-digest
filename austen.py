@@ -523,13 +523,18 @@ def render_html(data, today, date_slug):
     terms_section = new_terms_section(data.get("new_terms", []))
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme:light only;background-color:#f5fbff">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>{data['subject']}</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {{ color-scheme: light only; }}
+  html {{ background-color: #f5fbff !important; }}
+  body {{ background-color: #f5fbff !important; color: #373c46 !important; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -568,7 +573,7 @@ def render_html(data, today, date_slug):
   .modal-close:hover {{ color: {TEXT}; }}
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f5fbff;font-family:Manrope,Arial,Helvetica,sans-serif">
+<body style="margin:0;padding:0;background-color:#f5fbff !important;font-family:Manrope,Arial,Helvetica,sans-serif;color:#373c46 !important">
 
 <!-- Outer wrapper -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5fbff;min-height:100vh">
@@ -740,6 +745,159 @@ def render_html(data, today, date_slug):
 
 # ─── EML generator ──────────────────────────────────────────────────────────
 
+def render_email_html(data, today, date_slug, digest_url):
+    """Render a fully inline-styled, Outlook dark-mode-safe email HTML."""
+
+    def story_rows(stories):
+        rows = []
+        for i, s in enumerate(stories, 1):
+            rows.append(f"""
+        <tr>
+          <td style="padding:0 0 12px 0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="background:#ffffff;border-radius:8px;border:1px solid #c7e6ff;border-left:3px solid #4ddcc3">
+              <tr>
+                <td style="padding:20px 22px" bgcolor="#ffffff">
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td width="48" valign="top" style="padding:0 14px 0 0">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                          <tr><td width="36" height="36" align="center" bgcolor="#4ddcc3"
+                                  style="width:36px;height:36px;border-radius:50%;background:#4ddcc3;text-align:center;line-height:36px">
+                            <font color="#152230" face="Montserrat,Arial,sans-serif"><b style="font-size:15px">{i}</b></font>
+                          </td></tr>
+                        </table>
+                      </td>
+                      <td valign="middle">
+                        <p style="margin:0;font-size:15px;font-weight:700;font-family:Montserrat,Arial,sans-serif;line-height:1.3">
+                          <font color="#152230"><b>{s['title']}</b></font>
+                        </p>
+                        <p style="margin:4px 0 0 0;font-size:11px;font-family:Montserrat,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em">
+                          <font color="#4ddcc3">{s['source']}</font>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" style="padding-top:10px">
+                        <p style="margin:0;font-size:14px;font-family:Manrope,Arial,sans-serif;line-height:1.6">
+                          <font color="#5a5a5a">{s['glance']}</font>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>""")
+        return "".join(rows)
+
+    return f"""<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+<style>:root {{ color-scheme: light only; }}</style>
+</head>
+<body style="margin:0;padding:0;background-color:#f5fbff;font-family:Manrope,Arial,Helvetica,sans-serif" bgcolor="#f5fbff">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5fbff" style="background-color:#f5fbff">
+<tr><td align="center" style="padding:32px 16px;background-color:#f5fbff">
+  <table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%">
+
+    <!-- HEADER -->
+    <tr>
+      <td style="background:#152230;border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #4ddcc3" bgcolor="#152230">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td>
+              <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:Montserrat,Arial,sans-serif;font-weight:600">
+                <font color="#4ddcc3">Weekly Briefing &nbsp;·&nbsp; {today}</font>
+              </p>
+              <p style="margin:0;font-size:28px;font-weight:800;font-family:Montserrat,Arial,sans-serif;line-height:1.2">
+                <font color="#4ddcc3"><b>This Week</b></font><font color="#ffffff"><b> in AI</b></font>
+              </p>
+              <p style="margin:12px 0 0 0;font-size:14px;font-family:Manrope,Arial,sans-serif;line-height:1.6">
+                <font color="#cccccc">{data['intro']}</font>
+              </p>
+            </td>
+            <td width="80" align="right" valign="top">
+              <p style="margin:0;font-size:22px;font-weight:800;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.03em;line-height:1">
+                <font color="#4ddcc3"><b>ramsac</b></font>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- BODY -->
+    <tr>
+      <td style="background:#f5fbff;padding:28px 32px 8px;border-left:1px solid #c7e6ff;border-right:1px solid #c7e6ff" bgcolor="#f5fbff">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:28px 0 20px 0;border-top:1px solid #c7e6ff">
+              <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:Montserrat,Arial,sans-serif;font-weight:700">
+                <font color="#4ddcc3">Top 5 at a Glance — click to read the full edition online</font>
+              </p>
+            </td>
+          </tr>
+          {story_rows(data['stories'])}
+        </table>
+      </td>
+    </tr>
+
+    <!-- READ ONLINE BUTTON -->
+    <tr>
+      <td style="background:#f5fbff;padding:0 32px 24px;border-left:1px solid #c7e6ff;border-right:1px solid #c7e6ff" bgcolor="#f5fbff">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td align="center">
+              <a href="{digest_url}" target="_blank"
+                 style="display:inline-block;background:#4ddcc3;color:#152230;font-family:Montserrat,Arial,sans-serif;font-size:13px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:8px">
+                <font color="#152230"><b>Read full edition online &rarr;</b></font>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+      <td style="background:#152230;border-radius:0 0 12px 12px;padding:28px 36px;border:1px solid #152230" bgcolor="#152230">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td>
+              <p style="margin:0 0 4px 0;font-size:15px;font-weight:700;font-family:Montserrat,Arial,sans-serif">
+                <font color="#ffffff"><b>Stay curious, stay ahead.</b></font>
+              </p>
+              <p style="margin:0;font-size:13px;font-family:Manrope,Arial,sans-serif">
+                <font color="#999999">See you next week.</font>
+              </p>
+            </td>
+            <td align="right">
+              <p style="margin:0;font-size:11px;font-weight:800;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.02em">
+                <font color="#4ddcc3"><b>ramsac</b></font>
+              </p>
+              <p style="margin:2px 0 0 0;font-size:10px;font-family:Manrope,Arial,sans-serif">
+                <font color="#666666">Weekly AI Briefing</font>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+</td></tr>
+</table>
+</body>
+</html>"""
+
+
 def render_applescript(subject, html):
     """Return an AppleScript that opens a new Outlook compose window with the digest."""
     # Escape backslashes and double-quotes for AppleScript string literals,
@@ -755,7 +913,7 @@ end tell
 
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
 
-PAGES_BASE_URL = "https://weekly.ramsac.co.uk"
+PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"
 
 
 def write_index(directory, html_files):
@@ -1024,7 +1182,9 @@ def main():
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html)
 
-    script = render_applescript(data["subject"], html)
+    digest_url = f"{PAGES_BASE_URL}/{html_file}"
+    email_html = render_email_html(data, today, date_slug, digest_url)
+    script = render_applescript(data["subject"], email_html)
     cmd = f'#!/bin/bash\nosascript << \'APPLESCRIPT\'\n{script}\nAPPLESCRIPT\n'
     with open(cmd_file, "w", encoding="utf-8") as f:
         f.write(cmd)
@@ -1033,7 +1193,10 @@ def main():
     print(txt)
     print(f"\n--- Text saved to {txt_file}")
     print(f"--- HTML saved to {html_file}")
-    print(f"--- Email ready:  {cmd_file}  (double-click to compose in Outlook)")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"--- Email ready:  {cmd_file}")
+    print(f"\n    To open in Outlook, run this on your Mac (avoids quarantine):")
+    print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
 
     publish_to_pages(html_file, date_slug)
 
