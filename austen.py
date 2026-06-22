@@ -767,40 +767,42 @@ def write_index(directory, html_files):
 
 
 def publish_to_pages(html_file, date_slug):
-    """Clone gh-pages, add new digest, rebuild index, commit and push."""
+    """Add new digest to gh-pages worktree, rebuild index, commit and push."""
     import subprocess
     import shutil
     import tempfile
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    repo_url = subprocess.check_output(
-        ["git", "-C", script_dir, "remote", "get-url", "origin"], text=True
-    ).strip()
 
     print("\nPublishing to GitHub Pages...")
     with tempfile.TemporaryDirectory() as tmp:
         subprocess.run(
-            ["git", "clone", "--branch", "gh-pages", "--single-branch", repo_url, tmp],
+            ["git", "-C", script_dir, "worktree", "add", tmp, "gh-pages"],
             check=True, capture_output=True
         )
+        try:
+            shutil.copy(os.path.join(script_dir, html_file), os.path.join(tmp, html_file))
 
-        shutil.copy(os.path.join(script_dir, html_file), os.path.join(tmp, html_file))
+            pages = sorted(
+                [f for f in os.listdir(tmp) if f.startswith("austen_") and f.endswith(".html")],
+                reverse=True
+            )
+            write_index(tmp, pages)
 
-        pages = sorted(
-            [f for f in os.listdir(tmp) if f.startswith("austen_") and f.endswith(".html")],
-            reverse=True
-        )
-        write_index(tmp, pages)
-
-        subprocess.run(["git", "-C", tmp, "add", "-A"], check=True)
-        result = subprocess.run(
-            ["git", "-C", tmp, "commit", "-m", f"Austen digest {date_slug}"],
-            capture_output=True, text=True
-        )
-        if result.returncode != 0 and "nothing to commit" in result.stdout:
-            print("--- Pages: nothing new to publish.")
-            return
-        subprocess.run(["git", "-C", tmp, "push", "origin", "gh-pages"], check=True, capture_output=True)
+            subprocess.run(["git", "-C", tmp, "add", "-A"], check=True)
+            result = subprocess.run(
+                ["git", "-C", tmp, "commit", "-m", f"Austen digest {date_slug}"],
+                capture_output=True, text=True
+            )
+            if result.returncode != 0 and "nothing to commit" in result.stdout:
+                print("--- Pages: nothing new to publish.")
+                return
+            subprocess.run(["git", "-C", tmp, "push", "origin", "gh-pages"], check=True)
+        finally:
+            subprocess.run(
+                ["git", "-C", script_dir, "worktree", "remove", "--force", tmp],
+                capture_output=True
+            )
 
     print(f"--- Published:   {PAGES_BASE_URL}/")
     print(f"--- Direct link: {PAGES_BASE_URL}/{html_file}")
