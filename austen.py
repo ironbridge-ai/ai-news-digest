@@ -531,7 +531,7 @@ def render_html(data, today, date_slug):
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
-            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;font-weight:600">Austen &nbsp;·&nbsp; Weekly Briefing &nbsp;·&nbsp; {today}</p>
+            <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;font-weight:600">Weekly Briefing &nbsp;·&nbsp; {today}</p>
             <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:Montserrat,Arial,sans-serif;line-height:1.2">
               <span style="color:#4ddcc3">This Week</span> in AI
             </h1>
