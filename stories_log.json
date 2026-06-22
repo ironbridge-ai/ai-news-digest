@@ -1,0 +1,64 @@
+{
+  "stories": [
+    {
+      "date": "2026-06-17",
+      "title": "Anthropic's Claude Fable 5 So Powerful the White House Ordered It Shut Down",
+      "source": "Wired AI",
+      "topic": "The Trump administration forced Anthropic to pull Fable 5 and Mythos 5 after Amazon researchers found a jailbreak. National security officials intervened within days. Cybersecurity experts signed an open letter calling the ban counterproductive."
+    },
+    {
+      "date": "2026-06-17",
+      "title": "Microsoft Copilot Cowork Shifts to Usage-Based Billing and May Tap DeepSeek",
+      "source": "The Decoder",
+      "topic": "Microsoft is replacing flat-rate pricing for Copilot Cowork with usage-based billing due to high token consumption. Evaluating DeepSeek V4 as a cheaper model option within Copilot."
+    },
+    {
+      "date": "2026-06-17",
+      "title": "Google DeepMind Releases DiffusionGemma: Text Generation 4x Faster",
+      "source": "Ars Technica AI",
+      "topic": "DiffusionGemma applies diffusion-based generation to text, producing output 4x faster than autoregressive models. Runs on local hardware. Released as open-weight model."
+    },
+    {
+      "date": "2026-06-17",
+      "title": "Google DeepMind Warns About Millions of AI Agents Interacting Online",
+      "source": "MIT Technology Review",
+      "topic": "Google DeepMind funding research into dangers of mass multi-agent interaction at scale without human oversight. First major lab to publicly flag this as imminent safety challenge."
+    },
+    {
+      "date": "2026-06-17",
+      "title": "Critical Copilot Vulnerability Allowed Hackers to Steal 2FA Codes",
+      "source": "Ars Technica AI",
+      "topic": "SearchLeak exploit in Microsoft Copilot let attackers steal two-factor authentication codes via prompt injection. Patched by Microsoft."
+    },
+    {
+      "date": "2026-06-22",
+      "title": "Anthropic's Fable 5 So Powerful the White House Forced It Offline",
+      "source": "Wired AI",
+      "topic": "Follow-up: White House ordered Anthropic to pull Fable 5 after Amazon found a jailbreak stripping safety filters. Multi-agency national security response. Cybersecurity researchers protested."
+    },
+    {
+      "date": "2026-06-22",
+      "title": "Sakana AI's Fugu Orchestrates Multiple LLMs Into a Single System That Rivals the Best",
+      "source": "The Decoder",
+      "topic": "Fugu dynamically routes tasks across multiple AI models to match Anthropic Fable/Mythos benchmarks. Eliminates single-provider dependence. Multi-model architecture approach."
+    },
+    {
+      "date": "2026-06-22",
+      "title": "OpenAI's Codex Watches You Work Once and Repeats the Task Forever",
+      "source": "TechCrunch AI",
+      "topic": "Record and Replay feature lets users demonstrate a workflow once; Codex converts it into a reusable autonomous skill. Not yet available in UK/EU."
+    },
+    {
+      "date": "2026-06-22",
+      "title": "Samsung Deploys ChatGPT Enterprise and Codex to All Employees",
+      "source": "VentureBeat AI",
+      "topic": "Samsung rolling out ChatGPT Enterprise and Codex to all South Korea employees and global Device eXperience division. One of largest enterprise AI deployments announced."
+    },
+    {
+      "date": "2026-06-22",
+      "title": "Critical Copilot Vulnerability Let Hackers Steal 2FA Codes from Users",
+      "source": "Ars Technica AI",
+      "topic": "SearchLeak exploit in Microsoft Copilot allowed attackers to steal 2FA codes via prompt injection through search-grounding feature. Patched."
+    }
+  ]
+}

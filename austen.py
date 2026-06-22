@@ -139,6 +139,40 @@ def load_knowledge_log():
         return {"terms": []}
 
 
+def load_stories_log():
+    log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stories_log.json")
+    try:
+        with open(log_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"stories": []}
+
+
+def save_stories_log(log):
+    log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stories_log.json")
+    with open(log_file, "w", encoding="utf-8") as f:
+        json.dump(log, f, indent=2, ensure_ascii=False)
+
+
+def append_published_stories(stories, date_slug):
+    log = load_stories_log()
+    for s in stories:
+        log["stories"].append({
+            "date":   date_slug,
+            "title":  s.get("title", ""),
+            "source": s.get("source", ""),
+            "topic":  s.get("glance", "")[:200],
+        })
+    save_stories_log(log)
+
+
+def recent_published_stories(weeks=2):
+    """Return stories published in the last `weeks` weeks."""
+    log = load_stories_log()
+    cutoff = (datetime.now() - timedelta(weeks=weeks)).strftime("%Y-%m-%d")
+    return [s for s in log["stories"] if s.get("date", "") >= cutoff]
+
+
 def save_knowledge_log(log, used_term_names=None):
     existing = {t["term"].lower(): i for i, t in enumerate(log["terms"])}
 
@@ -189,6 +223,7 @@ def apply_term_highlights(data, knowledge_log):
 def build_user_prompt(articles, knowledge_log):
     today = datetime.now().strftime("%B %d, %Y")
     known_terms = knowledge_log.get("terms", [])
+    prev_stories = recent_published_stories(weeks=2)
 
     lines = [
         f"Today is {today}.",
@@ -198,6 +233,23 @@ def build_user_prompt(articles, knowledge_log):
         "Even controversial stories (government bans, regulation) should be framed around the achievement.",
         "",
     ]
+
+    if prev_stories:
+        lines += [
+            "─── STORIES ALREADY PUBLISHED (last 2 weeks) ───",
+            "The following stories have already been covered in recent editions of this digest.",
+            "Do NOT select a story that covers the same topic, company announcement, or event as any entry below.",
+            "EXCEPTION: If a story is a meaningful UPDATE or DEVELOPMENT on a previously covered topic",
+            "(e.g. a model that was banned last week has now been re-released, or a vulnerability that was",
+            "disclosed last week has now been patched and caused wider impact), you MAY include it — but you",
+            "MUST explicitly note in the glance that it is a follow-up to last week's coverage.",
+            "",
+        ]
+        for s in prev_stories:
+            lines.append(f"- [{s['date']}] {s['title']} ({s['source']})")
+            if s.get("topic"):
+                lines.append(f"  Topic summary: {s['topic']}")
+        lines.append("")
 
     if known_terms:
         lines += [
@@ -941,6 +993,9 @@ def main():
 
     save_knowledge_log(knowledge_log, used_term_names=used_terms)
     print(f"Knowledge log saved. Total terms: {len(knowledge_log['terms'])}.\n")
+
+    append_published_stories(data.get("stories", []), date_slug)
+    print(f"Stories log updated: {len(data.get('stories', []))} stories recorded.\n")
 
     txt_file  = f"austen_{date_slug}.txt"
     html_file = f"austen_{date_slug}.html"
