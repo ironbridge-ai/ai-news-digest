@@ -740,7 +740,7 @@ def render_html(data, today, date_slug):
 
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
 
-PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"
+PAGES_BASE_URL = "https://weekly.ramsac.co.uk"
 
 
 def write_index(directory, html_files):
