@@ -579,7 +579,7 @@ def render_html(data, today, date_slug):
           </td>
           <td align="right">
             <p style="margin:0;font-size:11px;font-weight:800;color:#4ddcc3;font-family:Montserrat,Arial,sans-serif;letter-spacing:-0.02em">ramsac</p>
-            <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Manrope,Arial,sans-serif">Austen — Weekly AI Briefing</p>
+            <p style="margin:2px 0 0 0;font-size:10px;color:rgba(255,255,255,0.4);font-family:Manrope,Arial,sans-serif">Weekly AI Briefing</p>
           </td>
         </tr>
       </table>
