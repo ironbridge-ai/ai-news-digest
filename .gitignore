@@ -6,5 +6,4 @@ __pycache__/
 austen_*.html
 austen_*.txt
 austen_*.eml
-austen_*.command
 feedback_log.json

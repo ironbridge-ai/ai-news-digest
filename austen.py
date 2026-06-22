@@ -1033,6 +1033,24 @@ def publish_to_pages(html_file, date_slug):
     print(f"--- Direct link: {PAGES_BASE_URL}/{html_file}")
 
 
+def publish_command_to_main(cmd_file, date_slug):
+    """Commit the .command file to main so it's always available on GitHub."""
+    import subprocess
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    print("\nPublishing .command file to GitHub...")
+    subprocess.run(["git", "-C", script_dir, "add", cmd_file], check=True)
+    result = subprocess.run(
+        ["git", "-C", script_dir, "commit", "-m", f"Add email command for {date_slug}"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0 and "nothing to commit" in result.stdout:
+        print("--- Command file: nothing new to commit.")
+        return
+    subprocess.run(["git", "-C", script_dir, "push", "origin", "main"], check=True)
+    print(f"--- Command file pushed to GitHub: {cmd_file}")
+
+
 # ─── Main ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -1199,6 +1217,7 @@ def main():
     print(f"    scp rvelasquez@dev-rvelasquez:{script_dir}/{cmd_file} ~/Desktop/ && open ~/Desktop/{cmd_file}")
 
     publish_to_pages(html_file, date_slug)
+    publish_command_to_main(cmd_file, date_slug)
 
 
 if __name__ == "__main__":
