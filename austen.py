@@ -1674,7 +1674,7 @@ end tell
 
 # ─── GitHub Pages publisher ─────────────────────────────────────────────────
 
-PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"
+PAGES_BASE_URL = "https://ironbridge-ai.github.io/Austen"  # GitHub Pages URL
 
 
 def write_index(directory, html_files):
