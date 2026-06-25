@@ -986,9 +986,13 @@ def render_glossary_html(knowledge_log):
   .search-wrap input {{ width: 100%; padding: 8px 12px 8px 32px; border: 1px solid {BORDER}; border-radius: 20px; font-size: 13px; font-family: Manrope, Arial, sans-serif; outline: none; color: {TEXT}; background: {BG_MAIN}; transition: border-color 0.15s; }}
   .search-wrap input:focus {{ border-color: {ACCENT}; }}
   .search-icon {{ position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.5; pointer-events: none; }}
-  .legend {{ display: flex; gap: 10px; flex-wrap: wrap; }}
-  .legend-item {{ display: flex; align-items: center; gap: 5px; font-size: 11px; color: {MUTED}; font-family: Montserrat, Arial, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }}
-  .legend-dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+  .legend-intro {{ font-size: 11px; color: {MUTED}; font-family: Manrope, Arial, sans-serif; margin-right: 4px; align-self: center; }}
+  .legend {{ display: flex; gap: 14px; flex-wrap: wrap; }}
+  .legend-item {{ display: flex; align-items: flex-start; gap: 6px; cursor: pointer; transition: opacity 0.15s; }}
+  .legend-dot {{ width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }}
+  .legend-text {{ display: flex; flex-direction: column; line-height: 1.25; }}
+  .legend-name {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: {NAVY}; font-family: Montserrat, Arial, sans-serif; }}
+  .legend-desc {{ font-size: 10px; color: {MUTED}; font-family: Manrope, Arial, sans-serif; white-space: nowrap; }}
   .trending-bar {{ font-size: 11px; color: {MUTED}; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }}
   .trending-bar span {{ font-family: Montserrat, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: {ACCENT}; }}
   .trending-chip {{ display: inline-block; background: rgba(77,220,195,0.1); color: {NAVY}; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(77,220,195,0.3); }}
@@ -1021,6 +1025,9 @@ def render_glossary_html(knowledge_log):
         <span class="search-icon">&#128269;</span>
         <input type="text" id="search-input" placeholder="Search concepts..." autocomplete="off">
       </div>
+    </div>
+    <div class="toolbar" style="padding-top:10px;padding-bottom:10px;border-top:none;align-items:flex-start;flex-wrap:wrap;gap:14px">
+      <span class="legend-intro">Concepts are grouped into 5 themes &mdash; click a theme to filter:</span>
       <div class="legend" id="legend"></div>
     </div>
     <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
@@ -1071,15 +1078,15 @@ def render_glossary_html(knowledge_log):
     var n = NODES.length;
     simNodes = NODES.map(function(nd, i) {{
       var angle = (2 * Math.PI * i / n) - Math.PI / 2;
-      var r = Math.min(W, H) * 0.32;
+      var r = Math.min(W, H) * 0.42;
       return {{ x: W/2 + r * Math.cos(angle), y: H/2 + r * Math.sin(angle),
                vx: 0, vy: 0, data: nd, idx: i }};
     }});
     simEdges = EDGES.map(function(e) {{ return {{ s: e[0], t: e[1] }}; }});
   }}
 
-  var REPULSION = 2800, SPRING_LEN = 130, SPRING_K = 0.04;
-  var DAMPING = 0.82, GRAVITY = 0.025, CAT_PULL = 0.012;
+  var REPULSION = 7000, SPRING_LEN = 175, SPRING_K = 0.035;
+  var DAMPING = 0.84, GRAVITY = 0.013;
 
   function tick() {{
     var cx = W/2, cy = H/2;
@@ -1180,11 +1187,17 @@ def render_glossary_html(knowledge_log):
       if (isActive) circle.setAttribute('filter', 'url(#glow)');
 
       var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      label.setAttribute('x', r + 6); label.setAttribute('y', '5');
+      var onRight = n.x > W * 0.58;
+      label.setAttribute('x', onRight ? -(r + 6) : (r + 6));
+      label.setAttribute('text-anchor', onRight ? 'end' : 'start');
+      label.setAttribute('y', '5');
       label.setAttribute('font-size', isActive ? '13' : '12');
       label.setAttribute('font-weight', isActive ? '700' : '600');
       label.setAttribute('font-family', 'Montserrat, Arial, sans-serif');
       label.setAttribute('fill', isActive ? '{NAVY}' : '#444');
+      label.setAttribute('stroke', '{BG_MAIN}');
+      label.setAttribute('stroke-width', '3.5');
+      label.setAttribute('paint-order', 'stroke');
       label.setAttribute('pointer-events', 'none');
       label.textContent = nd.label;
 
@@ -1290,15 +1303,30 @@ def render_glossary_html(knowledge_log):
   }});
 
   // Legend
+  var CAT_DESC = {{
+    foundation: 'The core building blocks of AI',
+    generation: 'How AI creates text, images & more',
+    deployment: 'Putting AI to work on real tasks',
+    safety:     'Risks, attacks & safeguards',
+    business:   'Commercial & strategic ideas'
+  }};
+  var CAT_NAMES = {{
+    foundation: 'Foundations', generation: 'Generation', deployment: 'Deployment',
+    safety: 'Safety', business: 'Business'
+  }};
   var legendEl = document.getElementById('legend');
   Object.keys(CAT_COLORS).forEach(function(cat) {{
     var item = document.createElement('div');
     item.className = 'legend-item';
-    item.innerHTML = '<div class="legend-dot" style="background:' + CAT_COLORS[cat] + '"></div>' + cat;
+    item.dataset.cat = cat;
+    item.title = 'Click to show only ' + (CAT_NAMES[cat] || cat) + ' concepts';
+    item.innerHTML = '<div class="legend-dot" style="background:' + CAT_COLORS[cat] + '"></div>' +
+      '<div class="legend-text"><span class="legend-name">' + (CAT_NAMES[cat] || cat) + '</span>' +
+      '<span class="legend-desc">' + (CAT_DESC[cat] || '') + '</span></div>';
     item.addEventListener('click', function() {{
       filterCat = (filterCat === cat) ? null : cat;
       document.querySelectorAll('.legend-item').forEach(function(li) {{
-        li.style.opacity = (filterCat && li.textContent.trim() !== filterCat) ? '0.35' : '1';
+        li.style.opacity = (filterCat && li.dataset.cat !== filterCat) ? '0.3' : '1';
       }});
     }});
     legendEl.appendChild(item);
