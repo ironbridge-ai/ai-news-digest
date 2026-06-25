@@ -36,6 +36,18 @@ jobs:
       - name: Check out app
         uses: actions/checkout@v6
 
+      - name: Ensure INTERNAL_REPOS_TOKEN is available
+        env:
+          TOKEN: ${{ secrets.INTERNAL_REPOS_TOKEN }}
+        run: |
+          if [[ -z "$TOKEN" ]]; then
+            echo "::error::INTERNAL_REPOS_TOKEN is not available to this repo, so the private" \
+                 "ai-guild-infra repo (schema + ib-validate) can't be cloned. Add Austen to" \
+                 "the org PAT's repository-access list (GitHub org → Settings → Secrets and" \
+                 "variables → Actions → INTERNAL_REPOS_TOKEN → Repository access). See deploy/README.md."
+            exit 1
+          fi
+
       - name: Check out ai-guild-infra (schema + validator)
         uses: actions/checkout@v6
         with:
