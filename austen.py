@@ -418,7 +418,7 @@ TOOLTIP_CSS = """
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    font-family: "Geist", Arial, sans-serif;
+    font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif;
     padding: 10px 22px;
     transition: opacity 0.15s;
   }
@@ -445,6 +445,8 @@ BORDER   = "#e6dcc4"   # Warm sand (ivory/gold blend) — hairlines
 NAVY     = "#10131b"   # 20°C raw metal (charcoal) — header/footer
 DARK_TEAL = "#000000"  # Black — header gradient end
 ON_DARK  = "#ffffff"   # Text/accents on dark surfaces (rust is too dark on charcoal)
+
+BUILD_TAG = datetime.now().strftime("%b %d, %H:%M")  # stamped each generation — lets you confirm the live build
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
@@ -912,7 +914,8 @@ def _nav_css():
   .nav-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
   .nav-link {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
   .nav-link:hover {{ color: #fff; }}
-  .nav-link.active {{ color: {ON_DARK}; border-bottom-color: {ACCENT}; }}"""
+  .nav-link.active {{ color: {ON_DARK}; border-bottom-color: {ACCENT}; }}
+  .nav-build {{ margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }}"""
 
 
 def _nav_html(active):
@@ -925,7 +928,7 @@ def _nav_html(active):
     for href, label in links:
         cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
         items += f'<a href="{href}" class="{cls}">{label}</a>'
-    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}</nav>'
+    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}<span class="nav-build">build {BUILD_TAG}</span></nav>'
 
 
 # ─── Glossary constellation renderer ────────────────────────────────────────
