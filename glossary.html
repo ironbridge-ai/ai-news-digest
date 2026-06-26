@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Glossary — RAMSAC</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   a { color: inherit; text-decoration: none; }
   
   .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #bf5631; }
-  .nav-brand { font-family: Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
-  .nav-link { font-family: Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
+  .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .nav-link:hover { color: #fff; }
   .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
   .workspace { display: flex; flex: 1; overflow: hidden; }
@@ -27,10 +27,10 @@
   .legend-item { display: flex; align-items: flex-start; gap: 6px; cursor: pointer; transition: opacity 0.15s; }
   .legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
   .legend-text { display: flex; flex-direction: column; line-height: 1.25; }
-  .legend-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #10131b; font-family: Geist, Arial, sans-serif; }
+  .legend-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #10131b; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; }
   .legend-desc { font-size: 10px; color: #5f5a52; font-family: Geist, Arial, sans-serif; white-space: nowrap; }
   .trending-bar { font-size: 11px; color: #5f5a52; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .trending-bar span { font-family: Geist, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #bf5631; }
+  .trending-bar span { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #bf5631; }
   .trending-chip { display: inline-block; background: rgba(191,86,49,0.1); color: #10131b; border-radius: 12px; padding: 2px 9px; font-size: 11px; cursor: pointer; border: 1px solid rgba(191,86,49,0.3); }
   .trending-chip:hover { background: #bf5631; color: #ffffff; }
   #graph-svg { flex: 1; width: 100%; display: block; cursor: grab; }
@@ -40,14 +40,14 @@
   .detail-empty .hint-icon { font-size: 36px; margin-bottom: 12px; }
   .detail-empty p { font-size: 13px; color: #5f5a52; line-height: 1.6; }
   .detail-content { flex: 1; overflow-y: auto; padding: 28px 24px; display: none; }
-  .detail-category { font-family: Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
-  .detail-term { font-family: Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #10131b; margin-bottom: 16px; line-height: 1.2; }
+  .detail-category { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .detail-term { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #10131b; margin-bottom: 16px; line-height: 1.2; }
   .detail-def { font-size: 14px; line-height: 1.75; color: #10131b; margin-bottom: 24px; }
-  .detail-section-label { font-family: Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #bf5631; font-weight: 700; margin-bottom: 8px; border-top: 1px solid #e6dcc4; padding-top: 16px; }
+  .detail-section-label { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #bf5631; font-weight: 700; margin-bottom: 8px; border-top: 1px solid #e6dcc4; padding-top: 16px; }
   .related-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .related-chip { display: inline-block; background: #f8f4e3; border: 1px solid #e6dcc4; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: Geist, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .related-chip { display: inline-block; background: #f8f4e3; border: 1px solid #e6dcc4; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .related-chip:hover { border-color: #bf5631; background: rgba(191,86,49,0.1); }
-  .bc-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #f8f4e3; border: 1px solid #e6dcc4; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: #10131b; font-family: Geist, Arial, sans-serif; transition: border-color 0.15s; }
+  .bc-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #f8f4e3; border: 1px solid #e6dcc4; border-radius: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: #10131b; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; transition: border-color 0.15s; }
   .bc-link:hover { border-color: #bf5631; }
   .bc-link-arrow { margin-left: auto; color: #bf5631; }
 </style>
