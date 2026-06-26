@@ -719,9 +719,9 @@ def render_html(data, today, date_slug):
   html {{ background-color: #f8f4e3 !important; }}
   body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
   .dh-bracket {{ position: relative; }}
-  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 38px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
-  .dh-bracket::before {{ left: 18px; background-image: {BRACKET_L}; }}
-  .dh-bracket::after {{ right: 18px; background-image: {BRACKET_R}; }}
+  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 78px; width: 46px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .dh-bracket::before {{ left: 22px; background-image: {BRACKET_L}; }}
+  .dh-bracket::after {{ right: 22px; background-image: {BRACKET_R}; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -778,7 +778,7 @@ def render_html(data, today, date_slug):
 
   <!-- ── HEADER ── -->
   <tr>
-    <td class="dh-bracket" style="background:{HERO_GRADIENT};border-radius:12px 12px 0 0;padding:40px 52px 36px">
+    <td class="dh-bracket" style="background:{HERO_GRADIENT};border-radius:12px 12px 0 0;padding:40px 88px 36px">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
@@ -962,9 +962,9 @@ def _nav_css():
   .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket {{ position: relative; }}
-  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 16px; bottom: 16px; width: 42px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
-  .bracket::before {{ left: 16px; background-image: {BRACKET_L}; }}
-  .bracket::after {{ right: 16px; background-image: {BRACKET_R}; }}"""
+  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 50%; transform: translateY(-50%); height: 84px; width: 50px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .bracket::before {{ left: 22px; background-image: {BRACKET_L}; }}
+  .bracket::after {{ right: 22px; background-image: {BRACKET_R}; }}"""
 
 
 def _nav_html(active):
@@ -1539,7 +1539,7 @@ def render_battlecards_html():
   .page-body {{ max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }}
   .page-title {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
   .page-sub {{ font-size: 14px; color: {MUTED}; margin-bottom: 32px; line-height: 1.6; }}
-  .ramsac-diff {{ background: {HERO_GRADIENT}; border-radius: 10px; padding: 24px 52px; margin-bottom: 36px; overflow: hidden; }}
+  .ramsac-diff {{ background: {HERO_GRADIENT}; border-radius: 10px; padding: 28px 88px; margin-bottom: 36px; overflow: hidden; }}
   .ramsac-diff-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 700; margin-bottom: 8px; }}
   .ramsac-diff p {{ font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }}
   .bc-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }}
@@ -1810,7 +1810,7 @@ def write_index(directory, html_files):
   a {{ color: inherit; text-decoration: none; }}
   {nav_css}
   .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
-  .hub-hero {{ background: {HERO_GRADIENT}; border-radius: 12px; padding: 40px 56px 36px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }}
+  .hub-hero {{ background: {HERO_GRADIENT}; border-radius: 12px; padding: 44px 92px 40px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }}
   .hub-hero h1 {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
   .hub-hero h1 span {{ color: {ON_DARK}; border-bottom: 3px solid {ACCENT}; padding-bottom: 2px; }}
   .hub-hero-sub {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 600; margin-bottom: 8px; }}
