@@ -414,7 +414,7 @@ TOOLTIP_CSS = """
     background: #bf5631;
     border: none;
     border-radius: 8px;
-    color: #10131b;
+    color: #ffffff;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
@@ -521,7 +521,7 @@ BATTLE_CARDS = [
         "name": "Anthropic",
         "product": "Claude",
         "tagline": "Safety-first frontier AI",
-        "color": "#d97706",
+        "color": "#bf5631",
         "what_it_is": "Anthropic is an AI safety company founded by former OpenAI researchers. Their flagship product is Claude — a family of AI models (Opus, Sonnet, Haiku) known for being exceptionally safe, accurate, and capable of handling long, complex documents. Claude powers many enterprise AI applications behind the scenes.",
         "key_products": ["Claude Opus (most capable)", "Claude Sonnet (balanced)", "Claude Haiku (fastest, cheapest)"],
         "strengths": ["Highest-rated for accuracy and instruction-following", "Best-in-class for long document analysis", "Strong safety record with enterprise clients", "Excellent at coding and technical reasoning"],
@@ -534,7 +534,7 @@ BATTLE_CARDS = [
         "name": "OpenAI",
         "product": "ChatGPT / GPT-4o",
         "tagline": "The brand that made AI mainstream",
-        "color": "#10b981",
+        "color": "#41407c",
         "what_it_is": "OpenAI created ChatGPT, the product that brought AI to 200 million users. Their GPT-4o model powers ChatGPT and is embedded in thousands of third-party products. OpenAI also makes Codex (code generation), DALL-E (images), and Operator (web browsing agent).",
         "key_products": ["ChatGPT (consumer + enterprise)", "GPT-4o API", "Codex (coding)", "Operator (agentic web browsing)"],
         "strengths": ["Largest user base and brand recognition", "Strong ecosystem of integrations", "Broad multimodal capability (text, images, audio, video)", "Fastest at shipping new features"],
@@ -547,7 +547,7 @@ BATTLE_CARDS = [
         "name": "Microsoft",
         "product": "Copilot / Azure AI",
         "tagline": "AI baked into tools your clients already pay for",
-        "color": "#0078d4",
+        "color": "#7d8aa0",
         "what_it_is": "Microsoft has embedded AI across its entire product stack. Copilot appears in Word, Excel, Outlook, Teams, and SharePoint. Azure OpenAI Service gives enterprises access to GPT-4 through Microsoft's cloud. Copilot Studio lets businesses build custom AI agents without writing code.",
         "key_products": ["Microsoft 365 Copilot (Office AI)", "Azure OpenAI Service", "Copilot Studio (custom agents)", "Security Copilot"],
         "strengths": ["Already inside tools clients pay for — no new vendor", "Deep integration with M365 data (emails, Teams, SharePoint)", "Enterprise-grade compliance and data residency", "Security Copilot for threat intelligence"],
@@ -560,7 +560,7 @@ BATTLE_CARDS = [
         "name": "Google / DeepMind",
         "product": "Gemini",
         "tagline": "The multimodal powerhouse",
-        "color": "#4285f4",
+        "color": "#c2922f",
         "what_it_is": "Google DeepMind develops Gemini, Google's flagship AI model family. Gemini powers Google Search AI, Google Workspace AI (Docs, Gmail, Meet), and Google Cloud AI. DeepMind — Google's research arm — also produces breakthrough research models like AlphaFold and DiffusionGemma.",
         "key_products": ["Gemini Ultra / Pro / Flash", "Google Workspace AI", "NotebookLM (document intelligence)", "Google Cloud Vertex AI"],
         "strengths": ["Best multimodal capabilities (text, image, audio, video, code)", "Deep integration with Google Workspace", "Real-time web search grounding built in", "Strong research pedigree from DeepMind"],
@@ -573,7 +573,7 @@ BATTLE_CARDS = [
         "name": "xAI",
         "product": "Grok",
         "tagline": "Elon Musk's unfiltered AI",
-        "color": "#1da1f2",
+        "color": "#10131b",
         "what_it_is": "xAI is Elon Musk's AI company, launched in 2023. Grok is its flagship model, integrated into X (formerly Twitter) and available as a standalone API. Grok 3 is positioned as a frontier model competing directly with GPT-4 and Claude. Aurora is xAI's image generation model.",
         "key_products": ["Grok 3 (frontier model)", "Grok API", "Aurora (image generation)", "X/Twitter integration"],
         "strengths": ["Real-time access to X/Twitter data", "Fewer content restrictions than competitors", "Growing model quality — Grok 3 benchmarks are competitive", "Strong coding capabilities"],
@@ -586,7 +586,7 @@ BATTLE_CARDS = [
         "name": "Meta AI",
         "product": "Llama",
         "tagline": "Open-weight AI anyone can run",
-        "color": "#0866ff",
+        "color": "#e2b566",
         "what_it_is": "Meta releases its Llama model family as open-weight — anyone can download and run the models on their own hardware. Llama 3 and 3.1 are among the most capable open models available. Meta AI is also the assistant embedded in WhatsApp, Instagram, and Facebook.",
         "key_products": ["Llama 3.x (open-weight models)", "Meta AI (consumer assistant)", "Llama API (hosted inference)"],
         "strengths": ["Open-weight means clients can run models on-premise with no data leaving their environment", "No per-token cost when self-hosted", "Strong community of fine-tuned variants for specific industries", "Competitive quality, especially for code and instruction-following"],
@@ -1495,8 +1495,8 @@ def render_battlecards_html():
   .bc-section p {{ font-size: 13px; line-height: 1.65; color: {MUTED}; }}
   .bc-section ul {{ padding-left: 18px; }}
   .bc-section ul li {{ font-size: 13px; line-height: 1.65; color: {MUTED}; margin-bottom: 2px; }}
-  .bc-watch {{ background: #fff8f0; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
-  .bc-watch .bc-section-label {{ color: #d97706; }}
+  .bc-watch {{ background: #f7efdd; border-radius: 6px; padding: 12px 14px; margin-top: 16px; }}
+  .bc-watch .bc-section-label {{ color: #c2922f; }}
   .bc-ramsac {{ background: #f8ece6; border-radius: 6px; padding: 12px 14px; margin-top: 16px; border-left: 3px solid {ACCENT}; }}
   .bc-ramsac .bc-section-label {{ color: {ACCENT}; }}
   .bc-ramsac p {{ color: #41407c; }}
