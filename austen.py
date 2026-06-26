@@ -461,8 +461,8 @@ HERO_GRADIENT = "linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%)"
 _BR_SVG = ("url(\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20"
            "viewBox='0%200%2056%20240'%20fill='none'%20stroke='%23f8f4e3'%20stroke-width='5'%20"
            "stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='{d}'/%3E%3C/svg%3E\")")
-BRACKET_L = _BR_SVG.format(d="M50%208L10%208L10%2090A32%2032%200%200%201%2010%20150L10%20232L50%20232")
-BRACKET_R = _BR_SVG.format(d="M6%208L46%208L46%2090A32%2032%200%200%200%2046%20150L46%20232L6%20232")
+BRACKET_L = _BR_SVG.format(d="M54%208L38%208L38%2090A30%2030%200%200%200%2038%20150L38%20232L54%20232")
+BRACKET_R = _BR_SVG.format(d="M2%208L18%208L18%2090A30%2030%200%200%201%2018%20150L18%20232L2%20232")
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
