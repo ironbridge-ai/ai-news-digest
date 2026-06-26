@@ -5,6 +5,7 @@ import os
 import sys
 import json
 import re
+import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
@@ -455,14 +456,24 @@ GRADIENT_BAR = ("linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,"
 # Hero treatment: forging heat cooling into cold iron (white text stays readable).
 HERO_GRADIENT = "linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%)"
 
-# Ironbridge "bridge-arch" bracket frames — a [ / ] whose vertical bar bulges out
-# into a semicircular arch in the middle (the bridge motif), drawn as inline SVG.
-# Cream stroke (#f8f4e3) on dark heroes. Used as ::before/::after background images.
-_BR_SVG = ("url(\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20"
-           "viewBox='0%200%2056%20240'%20fill='none'%20stroke='%23f8f4e3'%20stroke-width='5'%20"
-           "stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='{d}'/%3E%3C/svg%3E\")")
-BRACKET_L = _BR_SVG.format(d="M54%208L38%208L38%2090A30%2030%200%200%200%2038%20150L38%20232L54%20232")
-BRACKET_R = _BR_SVG.format(d="M2%208L18%208L18%2090A30%2030%200%200%201%2018%20150L18%20232L2%20232")
+# Ironbridge "bridge" bracket frames — a solid cream [ / ] with a large
+# semicircular arch bitten out of the inner edge (the bridge underside).
+# Drawn as a FILLED inline SVG, used as ::before/::after background images.
+_BR_TEMPLATE = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200' "
+                "fill='#f8f4e3'><path d='{d}'/></svg>")
+# Left bracket: cutout on the right (inner) side; rounded outer corners + arm tips.
+_BR_PATH_L = ("M0 10 A10 10 0 0 1 10 0 L90 0 A10 10 0 0 1 100 10 L100 30 "
+              "A70 70 0 0 0 100 170 L100 190 A10 10 0 0 1 90 200 L10 200 "
+              "A10 10 0 0 1 0 190 Z")
+# Right bracket: mirror — cutout on the left (inner) side.
+_BR_PATH_R = ("M100 10 A10 10 0 0 0 90 0 L10 0 A10 10 0 0 0 0 10 L0 30 "
+              "A70 70 0 0 1 0 170 L0 190 A10 10 0 0 0 10 200 L90 200 "
+              "A10 10 0 0 0 100 190 Z")
+def _bracket_uri(path):
+    svg = _BR_TEMPLATE.format(d=path)
+    return 'url("data:image/svg+xml,' + urllib.parse.quote(svg) + '")'
+BRACKET_L = _bracket_uri(_BR_PATH_L)
+BRACKET_R = _bracket_uri(_BR_PATH_R)
 
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
@@ -708,7 +719,7 @@ def render_html(data, today, date_slug):
   html {{ background-color: #f8f4e3 !important; }}
   body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
   .dh-bracket {{ position: relative; }}
-  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 30px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 38px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
   .dh-bracket::before {{ left: 18px; background-image: {BRACKET_L}; }}
   .dh-bracket::after {{ right: 18px; background-image: {BRACKET_R}; }}
 {TOOLTIP_CSS}
@@ -951,7 +962,7 @@ def _nav_css():
   .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
   /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket {{ position: relative; }}
-  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 16px; bottom: 16px; width: 34px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 16px; bottom: 16px; width: 42px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
   .bracket::before {{ left: 16px; background-image: {BRACKET_L}; }}
   .bracket::after {{ right: 16px; background-image: {BRACKET_R}; }}"""
 
