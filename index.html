@@ -10,14 +10,29 @@
   body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; min-height: 100vh; }
   a { color: inherit; text-decoration: none; }
   
-  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #bf5631; }
+  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; }
   .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
   .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .nav-link:hover { color: #fff; }
   .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
   .nav-build { margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  /* Ironbridge "iron is never one colour" gradient bar */
+  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,#c2ccd7 68%,#41407c 85%,#10131b 100%); }
+  /* hairline divider */
+  .hairline { height: 1px; background: #e6dcc4; border: none; margin: 0; }
+  /* outlined pill tag */
+  .pill { display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #bf5631; border: 1px solid #bf5631; border-radius: 999px; padding: 4px 13px; }
+  .pill-light { border-color: rgba(248,244,227,0.5); color: #ffffff; }
+  /* eyebrow row: pill on the left, counter on the right */
+  .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
+  /* bracket frame: cream [ ] on the sides of a hero */
+  .bracket { position: relative; }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 18px; bottom: 18px; width: 20px; pointer-events: none; }
+  .bracket::before { left: 16px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }
+  .bracket::after { right: 16px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }
   .page-body { max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }
-  .hub-hero { background: linear-gradient(135deg, #10131b 0%, #000000 100%); border-radius: 12px; padding: 36px 36px 32px; border-bottom: 3px solid #bf5631; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .hub-hero { background: linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%); border-radius: 12px; padding: 40px 56px 36px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }
   .hub-hero h1 { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }
   .hub-hero h1 span { color: #ffffff; border-bottom: 3px solid #bf5631; padding-bottom: 2px; }
   .hub-hero-sub { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; font-weight: 600; margin-bottom: 8px; }
@@ -41,30 +56,34 @@
 </style>
 </head>
 <body>
-<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link active">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 11:51</span></nav>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link active">Digest</a><a href="glossary.html" class="nav-link">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 12:13</span></nav><div class="brand-bar"></div>
 <div class="page-body">
-  <div class="hub-hero">
+  <div class="hub-hero bracket">
     <div>
-      <p class="hub-hero-sub">Austen &middot; AI Knowledge Hub</p>
+      <p style="margin:0 0 14px 0"><span class="pill pill-light">Austen &middot; AI Knowledge Hub</span></p>
       <h1><span>This Week</span> in AI</h1>
     </div>
     <div class="hub-hero-brand">ramsac</div>
   </div>
   <div class="hub-tiles">
     <a class="hub-tile" href="glossary.html">
-      <div class="hub-tile-label">Explore</div>
+      <span class="pill">Explore</span>
       <div class="hub-tile-title">AI Glossary</div>
       <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
       <span class="hub-tile-btn">Open glossary &rarr;</span>
     </a>
     <a class="hub-tile" href="battlecards.html">
-      <div class="hub-tile-label">Know your landscape</div>
+      <span class="pill">Know your landscape</span>
       <div class="hub-tile-title">Battle Cards</div>
       <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
       <span class="hub-tile-btn">View battle cards &rarr;</span>
     </a>
   </div>
-  <p class="section-label">All Editions</p>
+  <hr class="hairline" style="margin:36px 0 20px">
+  <div class="eyebrow-row" style="margin-bottom:20px">
+    <span class="pill">All Editions</span>
+    <span class="eyebrow-count">2 editions</span>
+  </div>
     <div class="edition-card">
       <div class="edition-date">June 22, 2026</div>
       <a class="view-btn" href="austen_2026-06-22.html">View &rarr;</a>

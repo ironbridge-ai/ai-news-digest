@@ -10,12 +10,27 @@
   body { background: #f8f4e3; font-family: Geist, Arial, sans-serif; color: #10131b; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   a { color: inherit; text-decoration: none; }
   
-  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid #bf5631; }
+  .site-nav { background: #10131b; padding: 0 24px; display: flex; align-items: center; gap: 0; }
   .nav-brand { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }
   .nav-link { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .nav-link:hover { color: #fff; }
   .nav-link.active { color: #ffffff; border-bottom-color: #bf5631; }
   .nav-build { margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  /* Ironbridge "iron is never one colour" gradient bar */
+  .brand-bar { height: 4px; width: 100%; background: linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,#c2ccd7 68%,#41407c 85%,#10131b 100%); }
+  /* hairline divider */
+  .hairline { height: 1px; background: #e6dcc4; border: none; margin: 0; }
+  /* outlined pill tag */
+  .pill { display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #bf5631; border: 1px solid #bf5631; border-radius: 999px; padding: 4px 13px; }
+  .pill-light { border-color: rgba(248,244,227,0.5); color: #ffffff; }
+  /* eyebrow row: pill on the left, counter on the right */
+  .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .eyebrow-count { font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5f5a52; }
+  /* bracket frame: cream [ ] on the sides of a hero */
+  .bracket { position: relative; }
+  .bracket::before, .bracket::after { content: ''; position: absolute; top: 18px; bottom: 18px; width: 20px; pointer-events: none; }
+  .bracket::before { left: 16px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }
+  .bracket::after { right: 16px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }
   .workspace { display: flex; flex: 1; overflow: hidden; }
   .graph-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
   .toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e6dcc4; flex-shrink: 0; }
@@ -54,7 +69,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link active">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 11:51</span></nav>
+<nav class="site-nav"><div class="nav-brand">ramsac</div><a href="index.html" class="nav-link">Digest</a><a href="glossary.html" class="nav-link active">Glossary</a><a href="battlecards.html" class="nav-link">Battle Cards</a><span class="nav-build">build Jun 26, 12:13</span></nav><div class="brand-bar"></div>
 <div class="workspace">
   <div class="graph-col">
     <div class="toolbar">
@@ -68,7 +83,7 @@
       <div class="legend" id="legend"></div>
     </div>
     <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
-      <div class="trending-bar" id="trending-bar"><span>Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
+      <div class="trending-bar" id="trending-bar"><span class="pill">Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
     </div>
     <svg id="graph-svg"></svg>
   </div>
