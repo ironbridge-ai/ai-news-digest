@@ -455,6 +455,15 @@ GRADIENT_BAR = ("linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,"
 # Hero treatment: forging heat cooling into cold iron (white text stays readable).
 HERO_GRADIENT = "linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%)"
 
+# Ironbridge "bridge-arch" bracket frames — a [ / ] whose vertical bar bulges out
+# into a semicircular arch in the middle (the bridge motif), drawn as inline SVG.
+# Cream stroke (#f8f4e3) on dark heroes. Used as ::before/::after background images.
+_BR_SVG = ("url(\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20"
+           "viewBox='0%200%2056%20240'%20fill='none'%20stroke='%23f8f4e3'%20stroke-width='5'%20"
+           "stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='{d}'/%3E%3C/svg%3E\")")
+BRACKET_L = _BR_SVG.format(d="M50%208L10%208L10%2090A32%2032%200%200%201%2010%20150L10%20232L50%20232")
+BRACKET_R = _BR_SVG.format(d="M6%208L46%208L46%2090A32%2032%200%200%200%2046%20150L46%20232L6%20232")
+
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
 # Sampled from the Ironbridge "Brand Worlds" metal-heat palette — one
@@ -699,9 +708,9 @@ def render_html(data, today, date_slug):
   html {{ background-color: #f8f4e3 !important; }}
   body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
   .dh-bracket {{ position: relative; }}
-  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 22px; bottom: 22px; width: 18px; pointer-events: none; }}
-  .dh-bracket::before {{ left: 18px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }}
-  .dh-bracket::after {{ right: 18px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }}
+  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 30px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .dh-bracket::before {{ left: 18px; background-image: {BRACKET_L}; }}
+  .dh-bracket::after {{ right: 18px; background-image: {BRACKET_R}; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -940,11 +949,11 @@ def _nav_css():
   /* eyebrow row: pill on the left, counter on the right */
   .eyebrow-row {{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }}
   .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
-  /* bracket frame: cream [ ] on the sides of a hero */
+  /* bridge-arch bracket frame: cream [ ] with a semicircular arch, on hero sides */
   .bracket {{ position: relative; }}
-  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 20px; pointer-events: none; }}
-  .bracket::before {{ left: 16px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }}
-  .bracket::after {{ right: 16px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }}"""
+  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 16px; bottom: 16px; width: 34px; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }}
+  .bracket::before {{ left: 16px; background-image: {BRACKET_L}; }}
+  .bracket::after {{ right: 16px; background-image: {BRACKET_R}; }}"""
 
 
 def _nav_html(active):
