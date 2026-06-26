@@ -448,6 +448,13 @@ ON_DARK  = "#ffffff"   # Text/accents on dark surfaces (rust is too dark on char
 
 BUILD_TAG = datetime.now().strftime("%b %d, %H:%M")  # stamped each generation — lets you confirm the live build
 
+# Ironbridge "iron is never one colour" metal-heat gradient: white-hot → gold →
+# forging rust → cooling steel → blued-steel → cold iron. Used as a thin signature bar.
+GRADIENT_BAR = ("linear-gradient(90deg,#f8f4e3 0%,#e2b566 20%,#bf5631 45%,"
+                "#c2ccd7 68%,#41407c 85%,#10131b 100%)")
+# Hero treatment: forging heat cooling into cold iron (white text stays readable).
+HERO_GRADIENT = "linear-gradient(150deg,#bf5631 0%,#7a2f1c 52%,#10131b 100%)"
+
 # ─── Glossary data ──────────────────────────────────────────────────────────
 
 # Sampled from the Ironbridge "Brand Worlds" metal-heat palette — one
@@ -691,6 +698,10 @@ def render_html(data, today, date_slug):
   :root {{ color-scheme: light only; }}
   html {{ background-color: #f8f4e3 !important; }}
   body {{ background-color: #f8f4e3 !important; color: #10131b !important; }}
+  .dh-bracket {{ position: relative; }}
+  .dh-bracket::before, .dh-bracket::after {{ content: ''; position: absolute; top: 22px; bottom: 22px; width: 18px; pointer-events: none; }}
+  .dh-bracket::before {{ left: 18px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }}
+  .dh-bracket::after {{ right: 18px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }}
 {TOOLTIP_CSS}
   .modal {{
     display: none;
@@ -747,7 +758,7 @@ def render_html(data, today, date_slug):
 
   <!-- ── HEADER ── -->
   <tr>
-    <td style="background:linear-gradient(135deg,#10131b 0%,#000000 100%);border-radius:12px 12px 0 0;padding:40px 36px 36px;border-bottom:3px solid #bf5631">
+    <td class="dh-bracket" style="background:{HERO_GRADIENT};border-radius:12px 12px 0 0;padding:40px 52px 36px">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td>
@@ -764,6 +775,9 @@ def render_html(data, today, date_slug):
       </table>
     </td>
   </tr>
+
+  <!-- ── metal-heat gradient bar ── -->
+  <tr><td style="height:4px;line-height:4px;font-size:0;background:{GRADIENT_BAR}">&nbsp;</td></tr>
 
   <!-- ── BODY ── -->
   <tr>
@@ -910,12 +924,27 @@ def render_html(data, today, date_slug):
 
 def _nav_css():
     return f"""
-  .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; border-bottom: 3px solid {ACCENT}; }}
+  .site-nav {{ background: {NAVY}; padding: 0 24px; display: flex; align-items: center; gap: 0; }}
   .nav-brand {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 16px; font-weight: 800; color: {ON_DARK}; letter-spacing: -0.02em; padding: 14px 20px 14px 0; border-right: 1px solid rgba(255,255,255,0.1); margin-right: 4px; white-space: nowrap; }}
   .nav-link {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 16px; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s; border-bottom: 3px solid transparent; margin-bottom: -3px; }}
   .nav-link:hover {{ color: #fff; }}
   .nav-link.active {{ color: {ON_DARK}; border-bottom-color: {ACCENT}; }}
-  .nav-build {{ margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }}"""
+  .nav-build {{ margin-left: auto; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }}
+  /* Ironbridge "iron is never one colour" gradient bar */
+  .brand-bar {{ height: 4px; width: 100%; background: {GRADIENT_BAR}; }}
+  /* hairline divider */
+  .hairline {{ height: 1px; background: {BORDER}; border: none; margin: 0; }}
+  /* outlined pill tag */
+  .pill {{ display: inline-block; font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {ACCENT}; border: 1px solid {ACCENT}; border-radius: 999px; padding: 4px 13px; }}
+  .pill-light {{ border-color: rgba(248,244,227,0.5); color: {ON_DARK}; }}
+  /* eyebrow row: pill on the left, counter on the right */
+  .eyebrow-row {{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }}
+  .eyebrow-count {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {MUTED}; }}
+  /* bracket frame: cream [ ] on the sides of a hero */
+  .bracket {{ position: relative; }}
+  .bracket::before, .bracket::after {{ content: ''; position: absolute; top: 18px; bottom: 18px; width: 20px; pointer-events: none; }}
+  .bracket::before {{ left: 16px; border: 3px solid rgba(248,244,227,0.85); border-right: none; }}
+  .bracket::after {{ right: 16px; border: 3px solid rgba(248,244,227,0.85); border-left: none; }}"""
 
 
 def _nav_html(active):
@@ -928,7 +957,7 @@ def _nav_html(active):
     for href, label in links:
         cls = "nav-link active" if label.lower().replace(" ", "") == active.lower().replace(" ", "") else "nav-link"
         items += f'<a href="{href}" class="{cls}">{label}</a>'
-    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}<span class="nav-build">build {BUILD_TAG}</span></nav>'
+    return f'<nav class="site-nav"><div class="nav-brand">ramsac</div>{items}<span class="nav-build">build {BUILD_TAG}</span></nav><div class="brand-bar"></div>'
 
 
 # ─── Glossary constellation renderer ────────────────────────────────────────
@@ -1045,7 +1074,7 @@ def render_glossary_html(knowledge_log):
       <div class="legend" id="legend"></div>
     </div>
     <div class="toolbar" style="padding-top:8px;padding-bottom:8px;border-top:none">
-      <div class="trending-bar" id="trending-bar"><span>Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
+      <div class="trending-bar" id="trending-bar"><span class="pill">Trending</span><span id="trending-chips" style="display:flex;gap:6px"></span></div>
     </div>
     <svg id="graph-svg"></svg>
   </div>
@@ -1490,7 +1519,7 @@ def render_battlecards_html():
   .page-body {{ max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }}
   .page-title {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 22px; font-weight: 800; color: {NAVY}; margin-bottom: 6px; }}
   .page-sub {{ font-size: 14px; color: {MUTED}; margin-bottom: 32px; line-height: 1.6; }}
-  .ramsac-diff {{ background: {NAVY}; border-radius: 10px; padding: 20px 24px; margin-bottom: 36px; }}
+  .ramsac-diff {{ background: {HERO_GRADIENT}; border-radius: 10px; padding: 24px 52px; margin-bottom: 36px; overflow: hidden; }}
   .ramsac-diff-label {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 700; margin-bottom: 8px; }}
   .ramsac-diff p {{ font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.7; }}
   .bc-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }}
@@ -1518,9 +1547,14 @@ def render_battlecards_html():
 <body>
 {nav}
 <div class="page-body">
+  <div class="eyebrow-row" style="margin-bottom:14px">
+    <span class="pill">Know your landscape</span>
+    <span class="eyebrow-count">{len(BATTLE_CARDS)} providers</span>
+  </div>
   <div class="page-title">AI Battle Cards</div>
-  <p class="page-sub">Know your landscape. Understand each major AI provider, what they offer, and how RAMSAC positions against them.</p>
-  <div class="ramsac-diff">
+  <p class="page-sub">Understand each major AI provider, what they offer, and how RAMSAC positions against them.</p>
+  <hr class="hairline" style="margin:24px 0 28px">
+  <div class="ramsac-diff bracket">
     <div class="ramsac-diff-label">Our differentiation</div>
     <p>RAMSAC is model-agnostic. We are not tied to any single AI provider. We can deploy, wrap, and switch between Anthropic, OpenAI, Google, Microsoft, Meta, and others — selecting the best model for each client's task, budget, and data requirements. Our clients get the best of every provider through one trusted partner, without vendor lock-in.</p>
   </div>
@@ -1756,7 +1790,7 @@ def write_index(directory, html_files):
   a {{ color: inherit; text-decoration: none; }}
   {nav_css}
   .page-body {{ max-width: 720px; margin: 0 auto; padding: 40px 16px 60px; }}
-  .hub-hero {{ background: linear-gradient(135deg, {NAVY} 0%, {DARK_TEAL} 100%); border-radius: 12px; padding: 36px 36px 32px; border-bottom: 3px solid {ACCENT}; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; }}
+  .hub-hero {{ background: {HERO_GRADIENT}; border-radius: 12px; padding: 40px 56px 36px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; overflow: hidden; }}
   .hub-hero h1 {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }}
   .hub-hero h1 span {{ color: {ON_DARK}; border-bottom: 3px solid {ACCENT}; padding-bottom: 2px; }}
   .hub-hero-sub {{ font-family: 'Install Rounded', 'Nunito', Geist, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {ON_DARK}; font-weight: 600; margin-bottom: 8px; }}
@@ -1782,28 +1816,32 @@ def write_index(directory, html_files):
 <body>
 {nav}
 <div class="page-body">
-  <div class="hub-hero">
+  <div class="hub-hero bracket">
     <div>
-      <p class="hub-hero-sub">Austen &middot; AI Knowledge Hub</p>
+      <p style="margin:0 0 14px 0"><span class="pill pill-light">Austen &middot; AI Knowledge Hub</span></p>
       <h1><span>This Week</span> in AI</h1>
     </div>
     <div class="hub-hero-brand">ramsac</div>
   </div>
   <div class="hub-tiles">
     <a class="hub-tile" href="glossary.html">
-      <div class="hub-tile-label">Explore</div>
+      <span class="pill">Explore</span>
       <div class="hub-tile-title">AI Glossary</div>
       <div class="hub-tile-desc">Navigate key AI concepts as a connected constellation. Click any term to see its definition and related ideas.</div>
       <span class="hub-tile-btn">Open glossary &rarr;</span>
     </a>
     <a class="hub-tile" href="battlecards.html">
-      <div class="hub-tile-label">Know your landscape</div>
+      <span class="pill">Know your landscape</span>
       <div class="hub-tile-title">Battle Cards</div>
       <div class="hub-tile-desc">Understand the major AI players, what they offer, and how RAMSAC positions against them in client conversations.</div>
       <span class="hub-tile-btn">View battle cards &rarr;</span>
     </a>
   </div>
-  <p class="section-label">All Editions</p>
+  <hr class="hairline" style="margin:36px 0 20px">
+  <div class="eyebrow-row" style="margin-bottom:20px">
+    <span class="pill">All Editions</span>
+    <span class="eyebrow-count">{len(html_files)} edition{'s' if len(html_files) != 1 else ''}</span>
+  </div>
 {cards_html}
   <div class="footer">
     <p>Stay curious, stay ahead.</p>
