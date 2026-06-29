@@ -848,8 +848,9 @@ def render_html(data, today, date_slug):
             </h1>
             <p style="margin:12px 0 0 0;font-size:14px;color:rgba(255,255,255,0.75);font-family:Geist,Arial,sans-serif;line-height:1.6">{data['intro']}</p>
           </td>
-          <td width="80" align="right" valign="top">
-            <p style="margin:0;font-size:14px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em;line-height:1.3">Thought<br>Provoked</p>
+          <td width="80" align="right" valign="top" style="text-align:right">
+            {TP_MARK}
+            <p style="margin:4px 0 0 0;font-size:11px;font-weight:800;color:#ffffff;font-family:'Install Rounded','Nunito',Geist,Arial,sans-serif;letter-spacing:-0.01em">Thought Provoked</p>
           </td>
         </tr>
       </table>
