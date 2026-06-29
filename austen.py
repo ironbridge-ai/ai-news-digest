@@ -475,18 +475,25 @@ def _bracket_uri(path):
 BRACKET_L = _bracket_uri(_BR_PATH_L)
 BRACKET_R = _bracket_uri(_BR_PATH_R)
 
-# TP monogram — Thought Provoked mark: P shape with T crossbar extending LEFT of stem.
-# Stem is at x=6 (not x=0) so the T left-arm (x=2–6) is visible above the stem.
-# Uses currentColor so it works on both dark (white) and light (dark) surfaces.
+# TP monogram — traced from the Thought Provoked logo reference.
+# Structure: T crossbar (top) + stem (center-left, full height) + P bowl (ring/donut, right).
+# The stem is drawn LAST so it sits on top of the donut and covers its left portion,
+# making the P counter visible only on the right side — matching the actual logo.
+# Uses currentColor so it inverts correctly on dark (white) and light (dark) surfaces.
 TP_MARK = (
-    '<svg width="22" height="26" viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg" '
+    '<svg width="28" height="32" viewBox="0 0 100 115" xmlns="http://www.w3.org/2000/svg" '
     'aria-hidden="true" style="display:inline-block;vertical-align:middle;flex-shrink:0">'
-    # Vertical stem — sits at x=6, NOT at the left edge, leaving room for T left arm
-    '<rect x="6" y="0" width="5" height="26" rx="2" fill="currentColor"/>'
-    # T crossbar — starts at x=2 (4 units LEFT of stem = the T arm)
-    '<rect x="2" y="0" width="15" height="5" rx="2" fill="currentColor"/>'
-    # P bowl — D-shape from right edge of stem (x=11) curving right
-    '<path d="M11 0 H16.5 C21 0 22 3.5 22 7.5 C22 11.5 21 15 16.5 15 H11 Z" fill="currentColor"/>'
+    # T crossbar — full-width rounded-cap bar
+    '<rect x="9" y="9" width="82" height="18" rx="9" fill="currentColor"/>'
+    # P bowl — donut ring (evenodd: outer circle - inner hole)
+    # Outer circle: center (64,72) r=27 → top=(64,45) clockwise
+    # Inner circle: center (64,72) r=13 → top=(64,59) counter-clockwise (creates hole)
+    '<path fill-rule="evenodd" fill="currentColor" d="'
+    'M64,45 a27,27 0 1,1 0,54 a27,27 0 1,1 0,-54 Z '
+    'M64,59 a13,13 0 1,0 0,26 a13,13 0 1,0 0,-26 Z'
+    '"/>'
+    # Stem — drawn last so it covers the bowl left portion (left arm of T visible above)
+    '<rect x="32" y="9" width="19" height="97" rx="8" fill="currentColor"/>'
     '</svg>'
 )
 
