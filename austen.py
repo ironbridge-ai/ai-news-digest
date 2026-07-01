@@ -1287,7 +1287,7 @@ def render_glossary_html(knowledge_log):
   // Linear gravity grew with distance and crushed far-apart concepts into the
   // centre; log scaling makes the inward pull near-constant past mid-range so
   // distant concepts keep their spread instead of compressing together.
-  var DAMPING = 0.84, GRAVITY = 0.41;
+  var DAMPING = 0.74, GRAVITY = 0.41;  // lower = more friction, settles with less overshoot/bounce
 
   function tick() {{
     var cx = W/2, cy = H/2;
