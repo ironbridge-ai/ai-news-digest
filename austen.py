@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Austen — AI news digest agent for RAMSAC's salesforce."""
+"""Austen — AI news digest agent for ramsac's salesforce."""
 
 import os
 import sys
@@ -2327,7 +2327,7 @@ def main():
         "compute", "inference", "latency", "bandwidth", "server", "hardware", "software",
         "database", "encryption", "authentication", "network", "endpoint", "protocol",
         "token", "tokens", "model", "machine learning", "deep learning",
-        # Basic ML/AI concepts the RAMSAC audience already understands
+        # Basic ML/AI concepts the ramsac audience already understands
         "fine-tuning", "fine-tuned", "fine-tune", "finetuning", "finetuned",
         "training", "pre-training", "pre-trained", "model training",
         "open-source", "open source", "open-weight", "open weight",
